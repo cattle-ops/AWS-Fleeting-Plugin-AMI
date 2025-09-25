@@ -18,6 +18,18 @@ source "amazon-ebs" "instance" {
   subnet_id                             = var.subnet_id
   temporary_security_group_source_cidrs = var.ingress_cidrs
   vpc_id                                = var.vpc_id
+  run_tags = {
+    "hlag:Application"        = "packer",
+    "hlag:AppOwner"           = "itsales/GitHub",
+    "hlag:Environment"        = "prod",
+    "hlag:Service"            = "Github/OSS",
+    "hlag:CostCenter"         = "61500",
+    "hlag:ManagedBy"          = "itsales/GitHub",
+    "hlag:DataClassification" = "Public",
+    "hlag:ProcessesPII"       = "False",
+    "hlag:KritisRelevant"     = "False",
+    "hlag:ServiceAccessedBy"  = "Internal"
+  }
 }
 
 build {
