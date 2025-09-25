@@ -27,22 +27,21 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: "packer init src/"
+        run: |
+          packer init src/
+          
+          # create the environment file for Packer
+          PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
+          echo "PKR_VAR_vpc_id=$PKR_VAR_vpc_id" > .env
+          echo "PKR_VAR_ingress_cidrs=[\"$(aws ec2 describe-vpcs --vpc-ids ${PKR_VAR_vpc_id} --query 'Vpcs[0].CidrBlock' --output text)\"]" >> .env
+          echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${PKR_VAR_vpc_id} --query 'Subnets[0].SubnetId' --output text)" >> .env
+          echo "PKR_VAR_aws_region=eu-central-1" >> .env
+          
+          cat .env
 
       - name: Run `packer validate`
         id: validate
         run: |
-          # get default VPC ID
-          export PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
-          
-          # get a subnet ID in the default VPC
-          export PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC_ID} --query 'Subnets[0].SubnetId' --output text)
-          
-          # get CIDR block of the default VPC
-          export PKR_VAR_ingress_cidrs="[\"$(aws ec2 describe-vpcs --vpc-ids ${DEFAULT_VPC_ID} --query 'Vpcs[0].CidrBlock' --output text)\"]"
-          
-          export PKR_VAR_aws_region="eu-central-1"
-          
           packer validate src/
 
       - name: Build Artifact
