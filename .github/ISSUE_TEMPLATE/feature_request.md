@@ -6,20 +6,22 @@ labels: new, enhancement
 assignees: ''
 ---
 
-# Describe the solution you'd like
+# Feature Request
+
+## Describe the solution you'd like
 
 <!--
   Provide a clear and concise description of what you want to happen. Add some sentences to describe the use case
   to be solved by this feature.
 -->
 
-# Describe alternatives you've considered
+## Describe alternatives you've considered
 
 <!--
   Let us know about other solutions you've tried or researched.
 -->
 
-# Suggest a solution
+## Suggest a solution
 
 <!--
 Things to include:
@@ -31,7 +33,7 @@ Things to include:
 If there are multiple solutions, please present each one separately. Save comparisons for the very end.
 -->
 
-# Additional context
+## Additional context
 
 <!--
   Is there anything else you can add about the proposal?
