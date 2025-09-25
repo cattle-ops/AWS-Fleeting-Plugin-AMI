@@ -1,0 +1,37 @@
+name: Build AMI in feature branch
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build_ami:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-central-1
+          role-to-assume: ${{ secrets.PACKER_ROLE_ARN }}
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: 1.10.0
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init src/"
+
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate src/"
+
+      - name: Build Artifact
+        run: packer build -on-error=abort src/
