@@ -39,7 +39,7 @@ jobs:
           export PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${DEFAULT_VPC_ID} --query 'Subnets[0].SubnetId' --output text)
           
           # get CIDR block of the default VPC
-          export PKR_VAR_ingress_cidrs="[\"$(aws ec2 describe-vpcs --vpc-ids ${DEFAULT_VPC_ID} --query 'Vpcs[0].CidrBlock' --output text)]\"]"
+          export PKR_VAR_ingress_cidrs="[\"$(aws ec2 describe-vpcs --vpc-ids ${DEFAULT_VPC_ID} --query 'Vpcs[0].CidrBlock' --output text)\"]"
           
           export PKR_VAR_aws_region="eu-central-1"
           
