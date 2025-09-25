@@ -43,7 +43,7 @@ jobs:
           
           export PKR_VAR_aws_region="eu-central-1"
           
-          "packer validate src/"
+          packer validate src/
 
       - name: Build Artifact
         run: packer build -on-error=abort src/
