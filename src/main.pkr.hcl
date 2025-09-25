@@ -1,8 +1,8 @@
 data "amazon-ami" "amazon_linux" {
   filters = {
     # renovate: amiFilter=[{"Name":"owner-id","Values":["137112412989"]},{"Name":"name","Values":["al2023-ami-2023.*-kernel-6.1-x86_64"]},{"region":"eu-central-1"}]
-    # currentImageName=al2023-ami-2023.8.20250808.1-kernel-6.1-x86_64
-    image-id = "ami-05a2d2d0a1020fecd"
+    # currentImageName=al2023-ami-2023.8.20250915.0-kernel-6.12-x86_64
+    image-id = "ami-090a27e0710d8ef71"
   }
 
   owners = ["137112412989"] # Amazon
