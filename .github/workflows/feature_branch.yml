@@ -45,4 +45,4 @@ jobs:
           packer validate src/
 
       - name: Build Artifact
-        run: packer build -on-error=abort src/
+        run: packer build src/
