@@ -18,7 +18,6 @@ source "amazon-ebs" "instance" {
   subnet_id                             = var.subnet_id
   #temporary_security_group_source_cidrs = var.ingress_cidrs
   vpc_id                                = var.vpc_id
-  volume_run_tags = local.default_run_tags
   run_tags = local.default_run_tags
 }
 
