@@ -21,7 +21,7 @@ source "amazon-ebs" "instance" {
   run_tags = local.default_run_tags
   run_volume_tags = local.default_run_tags
   snapshot_tags = local.default_run_tags
-  tags = merge(local.default_tags, {
+  tags = merge(local.default_run_tags, {
     "github:commit-sha" = "xyz"
     "github:release" = "abc"
   })
