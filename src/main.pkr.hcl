@@ -16,9 +16,7 @@ source "amazon-ebs" "instance" {
   source_ami                            = data.amazon-ami.amazon_linux.id
   ssh_username                          = "ec2-user"
   subnet_id                             = var.subnet_id
-  temporary_security_group_source_cidrs = var.ingress_cidrs
-  associate_public_ip_address = false
-  ssh_interface = "private_ip"
+  temporary_security_group_source_cidrs = ["0.0.0.0/0"] # we access the machine from GitHub Actions runners
   vpc_id                                = var.vpc_id
   run_tags = local.default_run_tags
 }
