@@ -24,7 +24,7 @@ source "amazon-ebs" "instance" {
 run_tags = local.default_run_tags
   run_volume_tags = local.default_run_tags
   snapshot_tags = merge(local.default_run_tags, {
-    "Name" = "GitLab Runner Fleeting 1.2.3"
+    "Name" = "GitLab Runner Fleeting 1.2.3 - AMI"
     "github:is-snapshot" = "true"
   })
 
