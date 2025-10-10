@@ -20,7 +20,7 @@ source "amazon-ebs" "instance" {
   vpc_id                                = var.vpc_id
   deprecate_at = local.deprecate_ami_at
   # TODO use `null` for snapshots
-  ami_groups = ["all"] # make the AMI public
+  ami_groups = null # ["all"] # make the AMI public
 run_tags = local.default_run_tags
   run_volume_tags = local.default_run_tags
   snapshot_tags = merge(local.default_run_tags, {
@@ -35,6 +35,12 @@ run_tags = local.default_run_tags
     "github:release" = "abc"
     "github:is-snapshot" = "true"
   })
+
+  # deregistration is done via a Lambda function, no user interaction needed
+  deregistration_protection {
+    enabled = true
+    with_cooldown = false
+  }
 }
 
 build {
