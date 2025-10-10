@@ -18,7 +18,7 @@ source "amazon-ebs" "instance" {
   subnet_id                             = var.subnet_id
   temporary_security_group_source_public_ip = true # restricts incoming traffic to the machine the GitHub Action is running on
   vpc_id                                = var.vpc_id
-
+  deprecate_at = local.deprecate_ami_at
   # TODO use `null` for snapshots
   ami_groups = ["all"] # make the AMI public
 run_tags = local.default_run_tags
@@ -28,7 +28,6 @@ run_tags = local.default_run_tags
     "github:is-snapshot" = "true"
   })
 
-  skip_ami_run_tags = true # we use tags below
   tags = merge(local.default_run_tags, {
     "Name" = "GitLab Runner Fleeting 1.2.3"
     "github:repository" = "123"

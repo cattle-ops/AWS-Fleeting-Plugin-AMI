@@ -1,5 +1,7 @@
 locals {
   timestamp = formatdate("YYYY-MM-DD'T'HH-mm-ssZ", timestamp())
+  deprecate_ami_at = formatdate("YYYY-MM-DD'T'HH-mm-ssZ", timeadd(timestamp(), "180d"))
+
   ami_name = "gitlab-runner-worker-with-fleeting-${local.timestamp}"
 
   default_run_tags = {
