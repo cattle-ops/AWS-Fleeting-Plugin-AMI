@@ -16,4 +16,12 @@ locals {
     "hlag:KritisRelevant"     = "False",
     "hlag:ServiceAccessedBy"  = "Internal"
   }
+
+  created_resources_tags = merge(local.default_run_tags, {
+    "Name" = "GitLab Runner Fleeting ${var.github_tag}"
+    "github:repository" = var.github_repository
+    "github:commit-sha" = var.github_commit_sha
+    "github:release-version" = var.github_tag
+    "github:is-snapshot" = var.github_is_snapshot
+  })
 }

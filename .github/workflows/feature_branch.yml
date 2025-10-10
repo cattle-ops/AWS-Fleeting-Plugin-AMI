@@ -33,10 +33,19 @@ jobs:
           # create the environment file for Packer
           PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
           echo "PKR_VAR_vpc_id=$PKR_VAR_vpc_id" > $GITHUB_ENV
-          echo "PKR_VAR_ingress_cidrs=[\"$(aws ec2 describe-vpcs --vpc-ids ${PKR_VAR_vpc_id} --query 'Vpcs[0].CidrBlock' --output text)\"]" >> $GITHUB_ENV
           echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${PKR_VAR_vpc_id} --query 'Subnets[0].SubnetId' --output text)" >> $GITHUB_ENV
           echo "PKR_VAR_aws_region=eu-central-1" >> $GITHUB_ENV
-          echo "PACKER_LOG=1" >> $GITHUB_ENV
+          echo "PKR_VAR_github_commit_sha=${{ github.sha }}" >> $GITHUB_ENV
+          echo "PKR_VAR_github_repository=${{ github.repository }}" >> $GITHUB_ENV
+          
+          tag=$(git describe --tags --abbrev=0)
+          echo "PKR_VAR_github_tag=$tag" >> $GITHUB_ENV
+          
+          if [[ ${{ github.ref_type }} == 'branch' ]]; then
+            echo "PKR_VAR_github_is_snapshot=true" >> $GITHUB_ENV
+          else
+            echo "PKR_VAR_github_is_snapshot=false" >> $GITHUB_ENV
+          fi
           
           cat $GITHUB_ENV
 
@@ -45,5 +54,5 @@ jobs:
         run: |
           packer validate src/
 
-      - name: Build Artifact
+      - name: Build AMI
         run: packer build src/

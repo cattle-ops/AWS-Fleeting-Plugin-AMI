@@ -23,18 +23,11 @@ source "amazon-ebs" "instance" {
   ami_groups = null # ["all"] # make the AMI public
 run_tags = local.default_run_tags
   run_volume_tags = local.default_run_tags
-  snapshot_tags = merge(local.default_run_tags, {
-    "Name" = "GitLab Runner Fleeting 1.2.3 - AMI"
-    "github:is-snapshot" = "true"
+  snapshot_tags = merge(local.created_resources_tags, {
+    "Name" = "GitLab Runner Fleeting ${var.github_tag} - AMI"
   })
 
-  tags = merge(local.default_run_tags, {
-    "Name" = "GitLab Runner Fleeting 1.2.3"
-    "github:repository" = "123"
-    "github:commit-sha" = "xyz"
-    "github:release" = "abc"
-    "github:is-snapshot" = "true"
-  })
+  tags = local.created_resources_tags
 
   # deregistration is done via a Lambda function, no user interaction needed
   deregistration_protection {
