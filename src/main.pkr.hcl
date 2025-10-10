@@ -21,7 +21,7 @@ source "amazon-ebs" "instance" {
   deprecate_at = local.deprecate_ami_at
   # TODO use `null` for snapshots
   ami_groups = null # ["all"] # make the AMI public
-run_tags = local.default_run_tags
+  run_tags = local.default_run_tags
   run_volume_tags = local.default_run_tags
   snapshot_tags = merge(local.created_resources_tags, {
     "Name" = "GitLab Runner Fleeting ${var.github_tag} - AMI"

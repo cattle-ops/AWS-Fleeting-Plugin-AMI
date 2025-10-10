@@ -38,12 +38,12 @@ jobs:
           echo "PKR_VAR_github_commit_sha=${{ github.sha }}" >> $GITHUB_ENV
           echo "PKR_VAR_github_repository=${{ github.repository }}" >> $GITHUB_ENV
           
-          tag=$(git describe --tags --abbrev=0)
-          echo "PKR_VAR_github_tag=$tag" >> $GITHUB_ENV
-          
           if [[ ${{ github.ref_type }} == 'branch' ]]; then
             echo "PKR_VAR_github_is_snapshot=true" >> $GITHUB_ENV
           else
+            tag=$(git describe --tags --abbrev=0)
+            echo "PKR_VAR_github_tag=$tag" >> $GITHUB_ENV
+
             echo "PKR_VAR_github_is_snapshot=false" >> $GITHUB_ENV
           fi
           
