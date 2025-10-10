@@ -36,6 +36,7 @@ jobs:
           echo "PKR_VAR_ingress_cidrs=[\"$(aws ec2 describe-vpcs --vpc-ids ${PKR_VAR_vpc_id} --query 'Vpcs[0].CidrBlock' --output text)\"]" >> $GITHUB_ENV
           echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${PKR_VAR_vpc_id} --query 'Subnets[0].SubnetId' --output text)" >> $GITHUB_ENV
           echo "PKR_VAR_aws_region=eu-central-1" >> $GITHUB_ENV
+          echo "PACKER_LOG=1" >> $GITHUB_ENV
           
           cat $GITHUB_ENV
 
