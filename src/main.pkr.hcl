@@ -17,6 +17,8 @@ source "amazon-ebs" "instance" {
   ssh_username                          = "ec2-user"
   subnet_id                             = var.subnet_id
   temporary_security_group_source_cidrs = var.ingress_cidrs
+  associate_public_ip_address = false
+  ssh_interface = "private_ip"
   vpc_id                                = var.vpc_id
   run_tags = local.default_run_tags
 }
