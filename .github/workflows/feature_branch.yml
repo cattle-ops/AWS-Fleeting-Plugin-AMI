@@ -14,13 +14,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@f2e9d495b03c8294c97f731a3419cc72a206d05a
         with:
           aws-region: eu-central-1
           role-to-assume: ${{ secrets.PACKER_ROLE_ARN }}
 
       - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
+        uses: hashicorp/setup-packer@1aa358be5cf73883762b302a3a03abd66e75b232
         id: setup
         with:
           version: 1.14.2
