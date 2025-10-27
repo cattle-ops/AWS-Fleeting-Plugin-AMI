@@ -31,24 +31,26 @@ jobs:
           packer init src/
           
           # create the environment file for Packer
-          PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
-          echo "PKR_VAR_vpc_id=$PKR_VAR_vpc_id" > $GITHUB_ENV
-          echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${PKR_VAR_vpc_id} --query 'Subnets[0].SubnetId' --output text)" >> $GITHUB_ENV
-          echo "PKR_VAR_aws_region=eu-central-1" >> $GITHUB_ENV
-          echo "PKR_VAR_github_commit_sha=${{ github.sha }}" >> $GITHUB_ENV
-          echo "PKR_VAR_github_repository=${{ github.repository }}" >> $GITHUB_ENV
-          
-          if [[ ${{ github.ref_type }} == 'branch' ]]; then
-            echo "PKR_VAR_github_is_snapshot=true" >> $GITHUB_ENV
-          else
-            tag=$(git describe --tags --abbrev=0)
-            echo "PKR_VAR_github_tag=$tag" >> $GITHUB_ENV
+          {
+            PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
 
-            echo "PKR_VAR_github_is_snapshot=false" >> $GITHUB_ENV
-          fi
-          
-          cat $GITHUB_ENV
+            echo "PKR_VAR_vpc_id=$PKR_VAR_vpc_id"
+            echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${PKR_VAR_vpc_id} --query 'Subnets[0].SubnetId' --output text)"
+            echo "PKR_VAR_aws_region=eu-central-1"
+            echo "PKR_VAR_github_commit_sha=${{ github.sha }}"
+            echo "PKR_VAR_github_repository=${{ github.repository }}"
+            
+            if [[ ${{ github.ref_type }} == 'branch' ]]; then
+              echo "PKR_VAR_github_is_snapshot=true"
+            else
+              tag=$(git describe --tags --abbrev=0)
+              echo "PKR_VAR_github_tag=$tag"
+  
+              echo "PKR_VAR_github_is_snapshot=false"
+            fi
+          } > "$GITHUB_ENV"
 
+          cat "$GITHUB_ENV"
       - name: Run `packer validate`
         id: validate
         run: |

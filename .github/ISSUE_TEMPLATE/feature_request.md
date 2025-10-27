@@ -6,7 +6,7 @@ labels: new, enhancement
 assignees: ''
 ---
 
-# Feature Request
+# Feature Request <!-- markdownlint-disable-line MD015 "Multiple top-level headings in the same document": false positive -->
 
 ## Describe the solution you'd like
 

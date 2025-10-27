@@ -6,7 +6,7 @@ labels: new, bug
 assignees: ''
 ---
 
-# Bug Report
+# Bug Report <!-- markdownlint-disable-line MD015 "Multiple top-level headings in the same document": false positive -->
 
 ## Describe the bug
 
