@@ -1,0 +1,5 @@
+---
+DISABLE_LINTERS:
+  # CSpell does a great job. No need for another spell checker
+  - SPELL_MISSPELL
+  - SPELL_LYCHEE

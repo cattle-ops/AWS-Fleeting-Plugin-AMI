@@ -1,0 +1,21 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignoreWords": [
+    "amannn",
+    "hmarr",
+    "itsales",
+    "kayman",
+    "shuf",
+    "usermod"
+  ],
+  "words": [
+    "codeowners",
+    "cooldown",
+    "hlag",
+    "kritis",
+    "terrascan",
+    "tflint"
+  ],
+  "flagWords": []
+}

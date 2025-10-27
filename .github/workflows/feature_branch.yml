@@ -1,0 +1,60 @@
+---
+name: Build AMI in feature branch
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build_ami:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@f2e9d495b03c8294c97f731a3419cc72a206d05a
+        with:
+          aws-region: eu-central-1
+          role-to-assume: ${{ secrets.PACKER_ROLE_ARN }}
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@1aa358be5cf73883762b302a3a03abd66e75b232
+        id: setup
+        with:
+          version: 1.14.2
+
+      - name: Run `packer init`
+        id: init
+        run: |
+          packer init src/
+          
+          # create the environment file for Packer
+          {
+            PKR_VAR_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
+
+            echo "PKR_VAR_vpc_id=$PKR_VAR_vpc_id"
+            echo "PKR_VAR_subnet_id=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=\"${PKR_VAR_vpc_id}\" --query 'Subnets[0].SubnetId' --output text)"
+            echo "PKR_VAR_aws_region=eu-central-1"
+            echo "PKR_VAR_github_commit_sha=${{ github.sha }}"
+            echo "PKR_VAR_github_repository=${{ github.repository }}"
+            
+            if [[ "${{ github.ref_type }}" == 'branch' ]]; then
+              echo "PKR_VAR_github_is_snapshot=true"
+            else
+              tag=$(git describe --tags --abbrev=0)
+              echo "PKR_VAR_github_tag=$tag"
+  
+              echo "PKR_VAR_github_is_snapshot=false"
+            fi
+          } > "$GITHUB_ENV"
+
+      - name: Run `packer validate`
+        id: validate
+        run: |
+          packer validate src/
+
+      - name: Build AMI
+        run: packer build src/
