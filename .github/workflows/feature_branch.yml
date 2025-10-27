@@ -50,7 +50,6 @@ jobs:
             fi
           } > "$GITHUB_ENV"
 
-          cat "$GITHUB_ENV"
       - name: Run `packer validate`
         id: validate
         run: |
