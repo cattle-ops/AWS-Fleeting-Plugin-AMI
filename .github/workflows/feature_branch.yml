@@ -1,3 +1,4 @@
+---
 name: Build AMI in feature branch
 
 on: # yamllint disable-line rule:truthy
@@ -40,7 +41,7 @@ jobs:
             echo "PKR_VAR_github_commit_sha=${{ github.sha }}"
             echo "PKR_VAR_github_repository=${{ github.repository }}"
             
-            if [[ ${{ github.ref_type }} == 'branch' ]]; then
+            if [[ "${{ github.ref_type }}" == 'branch' ]]; then
               echo "PKR_VAR_github_is_snapshot=true"
             else
               tag=$(git describe --tags --abbrev=0)
